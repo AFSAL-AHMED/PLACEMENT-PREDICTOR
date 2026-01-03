@@ -18,7 +18,6 @@ print("="*80)
 print("STUDENT PLACEMENT PREDICTION - ML PROJECT")
 print("="*80)
 
-# Load dataset
 df = pd.read_csv("Placement_Data_Full_Class.csv")
 print("\nDataset loaded successfully!")
 print(f"Shape: {df.shape[0]} rows x {df.shape[1]} columns")
@@ -32,14 +31,12 @@ print("\n" + "="*80)
 print("DATA CLEANING")
 print("="*80)
 
-# Drop serial number column
 if 'sl_no' in df.columns:
     df = df.drop(columns=["sl_no"])
     print("\nDropped 'sl_no' column")
 
 print(f"New shape: {df.shape}")
 
-# Check missing values
 print("\nMissing values:")
 missing_values = df.isnull().sum()
 print(missing_values[missing_values > 0])
@@ -48,14 +45,12 @@ if 'salary' in df.columns and df['salary'].isnull().sum() > 0:
     print(f"\nNote: {df['salary'].isnull().sum()} null values in salary column")
     print("(NULL salary = student not placed)")
 
-# Check duplicates
 duplicate_count = df.duplicated().sum()
 print(f"\nDuplicate rows: {duplicate_count}")
 if duplicate_count > 0:
     df = df.drop_duplicates()
     print(f"Removed duplicates. New shape: {df.shape}")
 
-# Identify column types
 categorical_cols = df.select_dtypes(include=['object']).columns.tolist()
 numerical_cols = df.select_dtypes(include=['int64', 'float64']).columns.tolist()
 
@@ -85,7 +80,6 @@ for col in categorical_cols:
 
 print("\nAll columns encoded successfully!")
 
-# Show encoding mappings for key columns
 print("\nEncoding Mappings:")
 important_cols = ['gender', 'workex', 'status', 'specialisation']
 for col in important_cols:
@@ -100,7 +94,6 @@ print("\n" + "="*80)
 print("TRAIN/TEST SPLIT")
 print("="*80)
 
-# Drop salary column
 if 'salary' in df.columns:
     df_for_model = df.drop(columns=['salary'])
     print("\nDropped 'salary' column (to avoid data leakage)")
@@ -109,7 +102,6 @@ else:
 
 print(f"Features for model: {df_for_model.shape[1]} columns")
 
-# Separate features and target
 if 'status' in df_for_model.columns:
     y = df_for_model['status']
     X = df_for_model.drop(columns=['status'])
@@ -117,7 +109,6 @@ if 'status' in df_for_model.columns:
     print(f"Target (y): {y.shape}")
     print(f"\nFeature list: {list(X.columns)}")
 
-# Check distribution
 print("\nPlacement distribution:")
 placement_counts = y.value_counts().sort_index()
 for class_val, count in placement_counts.items():
@@ -125,7 +116,6 @@ for class_val, count in placement_counts.items():
     percentage = (count / len(y)) * 100
     print(f"  {class_name}: {count} ({percentage:.1f}%)")
 
-# Split data
 print("\nSplitting data (80% train, 20% test)...")
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
@@ -134,7 +124,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 print(f"\nTraining set: {X_train.shape[0]} samples")
 print(f"Testing set: {X_test.shape[0]} samples")
 
-# Show split distribution
 train_distribution = y_train.value_counts().sort_index()
 test_distribution = y_test.value_counts().sort_index()
 
@@ -154,7 +143,6 @@ print("="*80)
 
 print("\nTraining 2 models for comparison...")
 
-# Logistic Regression
 print("\n" + "-"*80)
 print("Model 1: Logistic Regression")
 print("-"*80)
@@ -174,7 +162,6 @@ print(f"\nTraining time: {training_time:.4f} seconds")
 print(f"Train accuracy: {train_accuracy_lr*100:.2f}%")
 print(f"Test accuracy: {test_accuracy_lr*100:.2f}%")
 
-# Random Forest
 print("\n" + "-"*80)
 print("Model 2: Random Forest")
 print("-"*80)
@@ -197,7 +184,6 @@ print(f"\nTraining time: {training_time_rf:.4f} seconds")
 print(f"Train accuracy: {train_accuracy_rf*100:.2f}%")
 print(f"Test accuracy: {test_accuracy_rf*100:.2f}%")
 
-# Feature importance
 print("\nFeature Importance (Random Forest):")
 feature_importance = pd.DataFrame({
     'Feature': X.columns,
@@ -208,7 +194,6 @@ print("\nTop 5 features:")
 for idx, row in feature_importance.head(5).iterrows():
     print(f"  {row['Feature']}: {row['Importance']*100:.2f}%")
 
-# Compare models
 print("\n" + "="*80)
 print("MODEL COMPARISON")
 print("="*80)
@@ -229,7 +214,6 @@ comparison_df = pd.DataFrame({
 
 print("\n" + comparison_df.to_string(index=False))
 
-# Determine best model
 if test_accuracy_rf > test_accuracy_lr:
     best_model = "Random Forest"
     best_accuracy = test_accuracy_rf
@@ -246,7 +230,6 @@ print("\n" + "="*80)
 print("MODEL EVALUATION")
 print("="*80)
 
-# Confusion Matrix
 cm_lr = confusion_matrix(y_test, y_test_pred_lr)
 cm_rf = confusion_matrix(y_test, y_test_pred_rf)
 
@@ -268,7 +251,6 @@ print(f"       Placed    {cm_rf[1][0]}        {cm_rf[1][1]}")
 tn_rf, fp_rf, fn_rf, tp_rf = cm_rf.ravel()
 print(f"\nTN: {tn_rf}, FP: {fp_rf}, FN: {fn_rf}, TP: {tp_rf}")
 
-# Classification Report
 print("\n" + "-"*80)
 print("Classification Report - Logistic Regression")
 print("-"*80)
@@ -279,7 +261,6 @@ print("Classification Report - Random Forest")
 print("-"*80)
 print(classification_report(y_test, y_test_pred_rf, target_names=['Not Placed', 'Placed']))
 
-# Calculate metrics
 precision_lr = precision_score(y_test, y_test_pred_lr)
 recall_lr = recall_score(y_test, y_test_pred_lr)
 f1_lr = f1_score(y_test, y_test_pred_lr)
@@ -288,7 +269,6 @@ precision_rf = precision_score(y_test, y_test_pred_rf)
 recall_rf = recall_score(y_test, y_test_pred_rf)
 f1_rf = f1_score(y_test, y_test_pred_rf)
 
-# Create visualizations
 print("\nCreating visualizations...")
 
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -314,7 +294,6 @@ plt.savefig('confusion_matrices.png', dpi=300, bbox_inches='tight')
 print("Saved: confusion_matrices.png")
 plt.close()
 
-# Performance comparison chart
 metrics_names = ['Accuracy', 'Precision', 'Recall', 'F1-Score']
 lr_scores = [test_accuracy_lr*100, precision_lr*100, recall_lr*100, f1_lr*100]
 rf_scores = [test_accuracy_rf*100, precision_rf*100, recall_rf*100, f1_rf*100]
@@ -349,26 +328,22 @@ print("\n" + "="*80)
 print("SAVING MODEL")
 print("="*80)
 
-# Save best model
 model_filename = 'placement_prediction_model.pkl'
 print(f"\nSaving {best_model} model...")
 with open(model_filename, 'wb') as file:
     pickle.dump(best_model_obj, file)
 print(f"Saved: {model_filename}")
 
-# Save encoders
 encoders_filename = 'label_encoders.pkl'
 with open(encoders_filename, 'wb') as file:
     pickle.dump(label_encoders, file)
 print(f"Saved: {encoders_filename}")
 
-# Save feature names
 feature_names_file = 'feature_names.pkl'
 with open(feature_names_file, 'wb') as file:
     pickle.dump(list(X.columns), file)
 print(f"Saved: {feature_names_file}")
 
-# Test loading
 print("\nTesting model loading...")
 with open(model_filename, 'rb') as file:
     loaded_model = pickle.load(file)

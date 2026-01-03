@@ -6,7 +6,7 @@ from PIL import Image
 
 st.set_page_config(
     page_title="Placement Prediction System",
-    page_icon="🎓",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -14,53 +14,49 @@ st.set_page_config(
 st.markdown("""
     <style>
     .main {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-color: #f5f5f5;
     }
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-color: #4CAF50;
         color: white;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bold;
-        padding: 15px;
-        border-radius: 10px;
+        padding: 12px;
+        border-radius: 8px;
         border: none;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        background-color: #45a049;
     }
     .prediction-box {
-        padding: 30px;
-        border-radius: 15px;
+        padding: 25px;
+        border-radius: 10px;
         text-align: center;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
-        margin: 20px 0;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        margin: 15px 0;
     }
     .placed {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        background-color: #4CAF50;
         color: white;
     }
     .not-placed {
-        background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        background-color: #f44336;
         color: white;
     }
     h1 {
-        color: #1e3a8a;
+        color: #333;
         text-align: center;
-        font-size: 48px;
-        font-weight: 800;
+        font-size: 36px;
         margin-bottom: 10px;
     }
     .info-box {
-        background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%);
-        padding: 20px;
-        border-radius: 10px;
-        border-left: 5px solid #667eea;
-        margin: 15px 0;
+        background-color: #e3f2fd;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #2196F3;
+        margin: 10px 0;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -77,43 +73,43 @@ def load_model():
 
 model = load_model()
 
-st.markdown("<h1>🎓 Student Placement Prediction System</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 18px; color: #6b7280;'>Predict placement chances using Machine Learning</p>", unsafe_allow_html=True)
+st.markdown("<h1>Student Placement Prediction System</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 16px; color: #666;'>Predict placement chances using Machine Learning</p>", unsafe_allow_html=True)
 st.markdown("---")
 
 with st.sidebar:
-    st.markdown("## 📊 About")
+    st.markdown("## About")
     st.markdown("""
     <div class='info-box'>
     This system predicts whether an MBA student will be placed or not based on their academic performance and background.
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("### 🤖 Model Info")
+    st.markdown("### Model Info")
     st.info("""
-    - **Algorithm**: Random Forest
-    - **Accuracy**: ~86%
-    - **Features**: 12
-    - **Training Samples**: 172
+    - Algorithm: Random Forest
+    - Accuracy: 86%
+    - Features: 12
+    - Training Samples: 172
     """)
     
-    st.markdown("### 📈 Features")
+    st.markdown("### Features")
     st.success("""
-    ✅ Real-time predictions  
-    ✅ Confidence scores  
-    ✅ User-friendly interface  
-    ✅ Detailed insights  
+    - Real-time predictions
+    - Confidence scores
+    - User-friendly interface
+    - Detailed insights
     """)
 
-tab1, tab2, tab3 = st.tabs(["🎯 Make Prediction", "📊 Model Insights", "ℹ️ How to Use"])
+tab1, tab2, tab3 = st.tabs(["Make Prediction", "Model Insights", "How to Use"])
 
 with tab1:
-    st.markdown("## 📝 Enter Student Details")
+    st.markdown("## Enter Student Details")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 🎓 Academic Information")
+        st.markdown("### Academic Information")
         
         st.markdown("**Secondary School (SSC)**")
         ssc_p = st.slider("SSC Percentage", 40.0, 100.0, 70.0, 0.5)
@@ -129,7 +125,7 @@ with tab1:
         degree_t = st.selectbox("Degree Type", ["Comm&Mgmt", "Others", "Sci&Tech"])
     
     with col2:
-        st.markdown("### 💼 MBA & Experience")
+        st.markdown("### MBA and Experience")
         
         workex = st.radio("Work Experience", ["No", "Yes"])
         
@@ -145,7 +141,7 @@ with tab1:
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        predict_button = st.button("🔮 PREDICT PLACEMENT", use_container_width=True)
+        predict_button = st.button("PREDICT PLACEMENT", use_container_width=True)
     
     if predict_button:
         if model is None:
@@ -175,19 +171,19 @@ with tab1:
                     confidence = None
             
             st.markdown("---")
-            st.markdown("## 🎯 Prediction Result")
+            st.markdown("## Prediction Result")
             
             if prediction == 1:
                 st.markdown(f"""
                     <div class='prediction-box placed'>
-                        ✅ STUDENT WILL BE PLACED
+                        STUDENT WILL BE PLACED
                     </div>
                 """, unsafe_allow_html=True)
                 st.balloons()
             else:
                 st.markdown(f"""
                     <div class='prediction-box not-placed'>
-                        ❌ STUDENT MAY NOT BE PLACED
+                        STUDENT MAY NOT BE PLACED
                     </div>
                 """, unsafe_allow_html=True)
             
@@ -198,82 +194,82 @@ with tab1:
                     st.progress(confidence / 100)
             
             st.markdown("---")
-            st.markdown("## 💡 Key Insights")
+            st.markdown("## Key Insights")
             
             col1, col2, col3 = st.columns(3)
             
             with col1:
-                st.markdown("### 📚 Academic Profile")
+                st.markdown("### Academic Profile")
                 avg_academic = (ssc_p + hsc_p + degree_p + mba_p) / 4
                 st.metric("Average Percentage", f"{avg_academic:.2f}%")
                 if avg_academic >= 75:
-                    st.success("✅ Strong academic record")
+                    st.success("Strong academic record")
                 elif avg_academic >= 60:
-                    st.warning("⚠️ Average performance")
+                    st.warning("Average performance")
                 else:
-                    st.error("❌ Below average")
+                    st.error("Below average")
             
             with col2:
-                st.markdown("### 💼 Experience")
+                st.markdown("### Experience")
                 if workex_encoded == 1:
-                    st.success("✅ Has work experience")
+                    st.success("Has work experience")
                     st.info("Work experience improves placement chances!")
                 else:
-                    st.warning("⚠️ No work experience")
+                    st.warning("No work experience")
                     st.info("Consider internships")
             
             with col3:
-                st.markdown("### 🎯 MBA Performance")
+                st.markdown("### MBA Performance")
                 st.metric("MBA Percentage", f"{mba_p:.2f}%")
                 if mba_p >= 75:
-                    st.success("✅ Excellent")
+                    st.success("Excellent")
                 elif mba_p >= 60:
-                    st.warning("⚠️ Good")
+                    st.warning("Good")
                 else:
-                    st.error("❌ Needs improvement")
+                    st.error("Needs improvement")
             
             st.markdown("---")
-            st.markdown("## 📋 Recommendations")
+            st.markdown("## Recommendations")
             
             recommendations = []
             
             if mba_p < 70:
-                recommendations.append("📈 Focus on improving MBA percentage")
+                recommendations.append("Focus on improving MBA percentage")
             if workex_encoded == 0:
-                recommendations.append("💼 Consider work experience through internships")
+                recommendations.append("Consider work experience through internships")
             if etest_p < 70:
-                recommendations.append("📝 Work on entrance test scores")
+                recommendations.append("Work on entrance test scores")
             if avg_academic < 70:
-                recommendations.append("📚 Overall academic performance needs improvement")
+                recommendations.append("Overall academic performance needs improvement")
             
             if prediction == 1 and not recommendations:
-                st.success("🎉 Excellent profile! Keep it up!")
+                st.success("Excellent profile! Keep it up!")
             elif recommendations:
                 for rec in recommendations:
                     st.warning(rec)
             else:
-                st.info("💪 Keep working on your profile!")
+                st.info("Keep working on your profile!")
 
 with tab2:
-    st.markdown("## 📊 Model Performance")
+    st.markdown("## Model Performance")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 🎯 Accuracy Metrics")
+        st.markdown("### Accuracy Metrics")
         st.markdown("""
         <div class='info-box'>
         <h4>Random Forest Classifier</h4>
         <ul>
-        <li><b>Test Accuracy:</b> ~86%</li>
-        <li><b>Precision:</b> ~93%</li>
-        <li><b>Recall:</b> ~90%</li>
-        <li><b>F1-Score:</b> ~92%</li>
+        <li><b>Test Accuracy:</b> 86%</li>
+        <li><b>Precision:</b> 93%</li>
+        <li><b>Recall:</b> 90%</li>
+        <li><b>F1-Score:</b> 92%</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("### 📈 Feature Importance")
+        st.markdown("### Feature Importance")
         st.markdown("""
         <div class='info-box'>
         <b>Top 5 Important Features:</b>
@@ -288,7 +284,7 @@ with tab2:
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("### 🔍 What This Means")
+        st.markdown("### What This Means")
         st.success("""
         **High Precision (93%)**  
         When model predicts "Placed", it's correct 93% of the time.
@@ -305,7 +301,7 @@ with tab2:
         """)
     
     try:
-        st.markdown("### 📊 Visualizations")
+        st.markdown("### Visualizations")
         col1, col2 = st.columns(2)
         with col1:
             confusion_img = Image.open('confusion_matrices.png')
@@ -317,10 +313,10 @@ with tab2:
         st.info("Visualization images not found. Run eda.py to generate them.")
 
 with tab3:
-    st.markdown("## ℹ️ How to Use")
+    st.markdown("## How to Use")
     
     st.markdown("""
-    ### 📝 Steps
+    ### Steps
     
     1. Go to **'Make Prediction'** tab
     2. Enter all student details (percentages, board, stream, etc.)
@@ -328,13 +324,13 @@ with tab3:
     4. View prediction result and confidence
     5. Check insights and recommendations
     
-    ### 📊 Understanding Results
+    ### Understanding Results
     
     - **Placed**: High probability based on profile
     - **Not Placed**: May face challenges, focus on improvements
     - **Confidence**: How certain the model is (higher = better)
     
-    ### 🎯 Key Factors
+    ### Key Factors
     
     1. **MBA Percentage** - Most important (25% weight)
     2. **Degree Percentage** - Second (19% weight)
@@ -342,17 +338,17 @@ with tab3:
     4. **Work Experience** - Can make big difference!
     5. **Academic Scores** - Consistent performance matters
     
-    ### 💡 Tips
+    ### Tips
     
-    ✅ Maintain high MBA percentage (>70%)  
-    ✅ Get work experience  
-    ✅ Score well in entrance tests  
-    ✅ Keep consistent academic performance  
+    - Maintain high MBA percentage (>70%)
+    - Get work experience
+    - Score well in entrance tests
+    - Keep consistent academic performance
     """)
 
 st.markdown("---")
 st.markdown("""
-    <div style='text-align: center; color: #6b7280; padding: 20px;'>
+    <div style='text-align: center; color: #666; padding: 15px;'>
         <p><b>Student Placement Prediction System</b></p>
         <p>Built with Python and Machine Learning</p>
     </div>
